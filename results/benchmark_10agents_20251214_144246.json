@@ -1,0 +1,115 @@
+{
+  "num_agents": 10,
+  "duration_seconds": 60,
+  "environment": "CartPole-v1",
+  "total_training_steps": 25,
+  "total_episodes": 2251,
+  "steps_per_second": 0.25096246163287056,
+  "episodes_per_second": 22.596660045423665,
+  "avg_reward": 22.806766119962326,
+  "max_reward": 23.54022988505747,
+  "min_reward": 22.180505415162454,
+  "reward_std": 0.45401517668359764,
+  "total_gossip_rounds": 25,
+  "gossip_rounds_per_agent": 2.5,
+  "gossip_efficiency": 1.0,
+  "avg_epsilon_spent": 2.2139112634887383,
+  "max_epsilon_spent": 2.44858675282938,
+  "privacy_efficiency": 10.30157192661048,
+  "agents_completed": 10,
+  "throughput_per_agent": 2.2596660045423667,
+  "agent_metrics": [
+    {
+      "agent_id": "agent-0",
+      "steps": 2,
+      "episodes": 181,
+      "avg_reward": 22.629834254143645,
+      "gossip_rounds": 2,
+      "epsilon_spent": 1.9792357741480977,
+      "avg_step_time_ms": 4005.4110288619995
+    },
+    {
+      "agent_id": "agent-1",
+      "steps": 2,
+      "episodes": 174,
+      "avg_reward": 23.54022988505747,
+      "gossip_rounds": 2,
+      "epsilon_spent": 1.9792357741480977,
+      "avg_step_time_ms": 3976.230502128601
+    },
+    {
+      "agent_id": "agent-2",
+      "steps": 2,
+      "episodes": 176,
+      "avg_reward": 23.272727272727273,
+      "gossip_rounds": 2,
+      "epsilon_spent": 1.9792357741480977,
+      "avg_step_time_ms": 4016.1116123199463
+    },
+    {
+      "agent_id": "agent-3",
+      "steps": 2,
+      "episodes": 182,
+      "avg_reward": 22.505494505494507,
+      "gossip_rounds": 2,
+      "epsilon_spent": 1.9792357741480977,
+      "avg_step_time_ms": 3978.3775806427
+    },
+    {
+      "agent_id": "agent-4",
+      "steps": 2,
+      "episodes": 175,
+      "avg_reward": 23.405714285714286,
+      "gossip_rounds": 2,
+      "epsilon_spent": 1.9792357741480977,
+      "avg_step_time_ms": 3992.641806602478
+    },
+    {
+      "agent_id": "agent-5",
+      "steps": 3,
+      "episodes": 270,
+      "avg_reward": 22.755555555555556,
+      "gossip_rounds": 3,
+      "epsilon_spent": 2.44858675282938,
+      "avg_step_time_ms": 3980.6430339813232
+    },
+    {
+      "agent_id": "agent-6",
+      "steps": 3,
+      "episodes": 277,
+      "avg_reward": 22.180505415162454,
+      "gossip_rounds": 3,
+      "epsilon_spent": 2.44858675282938,
+      "avg_step_time_ms": 3985.0353399912515
+    },
+    {
+      "agent_id": "agent-7",
+      "steps": 3,
+      "episodes": 273,
+      "avg_reward": 22.505494505494507,
+      "gossip_rounds": 3,
+      "epsilon_spent": 2.44858675282938,
+      "avg_step_time_ms": 3968.201160430908
+    },
+    {
+      "agent_id": "agent-8",
+      "steps": 3,
+      "episodes": 276,
+      "avg_reward": 22.26086956521739,
+      "gossip_rounds": 3,
+      "epsilon_spent": 2.44858675282938,
+      "avg_step_time_ms": 3983.9301109313965
+    },
+    {
+      "agent_id": "agent-9",
+      "steps": 3,
+      "episodes": 267,
+      "avg_reward": 23.01123595505618,
+      "gossip_rounds": 3,
+      "epsilon_spent": 2.44858675282938,
+      "avg_step_time_ms": 3974.039077758789
+    }
+  ],
+  "timestamp": "2025-12-14T14:41:06.436619",
+  "wall_clock_time": 99.61649179458618
+}
