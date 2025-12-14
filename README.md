@@ -4,25 +4,24 @@ A decentralized reinforcement learning framework featuring gossip-based gradient
 
 ![Python 3.10+](https://img.shields.io/badge/python-3.10%2B-blue)
 ![C++17](https://img.shields.io/badge/c%2B%2B-17-blue)
-![License: MIT](https://img.shields.io/badge/License-MIT-green.svg)
 
 ---
 
-## 🎯 Overview
+## Overview
 
 This system enables **distributed reinforcement learning** across multiple agents without a central parameter server. Agents share gradients using a **gossip protocol**, ensuring scalability and fault tolerance while maintaining **differential privacy guarantees**.
 
 ### Key Features
 
-- 🔄 **Gossip-Based Aggregation** - Decentralized gradient sharing without central coordinator
-- 🔒 **Differential Privacy** - Built-in ε-δ privacy guarantees with adaptive noise
-- ⚡ **High-Performance RPC** - Zero-copy C++ transport layer (~10μs latency intra-node)
-- 🧠 **Distributed PPO** - Proximal Policy Optimization with gossip synchronization
-- 📊 **MLOps Ready** - Prometheus metrics, Jaeger tracing, experiment tracking
+- **Gossip-Based Aggregation** - Decentralized gradient sharing without central coordinator
+- **Differential Privacy** - Built-in ε-δ privacy guarantees with adaptive noise
+- **High-Performance RPC** - Zero-copy C++ transport layer (~10μs latency intra-node)
+- **Distributed PPO** - Proximal Policy Optimization with gossip synchronization
+- **MLOps Ready** - Prometheus metrics, Jaeger tracing, experiment tracking
 
 ---
 
-## 📦 Installation
+## Installation
 
 ### Prerequisites
 
@@ -37,8 +36,8 @@ This system enables **distributed reinforcement learning** across multiple agent
 
 ```bash
 # Clone the repository
-git clone https://github.com/yourusername/gossip-rl.git
-cd gossip-rl
+git clone https://github.com/manikya7022/Gossip-Based-Distributed-RL-Training-System.git
+cd Gossip-Based-Distributed-RL-Training-System
 
 # Install Python dependencies
 pip install torch numpy click prometheus_client pyyaml gymnasium pydantic pydantic-settings
@@ -55,7 +54,7 @@ ctest --output-on-failure
 
 ---
 
-## 🚀 Quick Start
+## Quick Start
 
 ### Run a Training Agent
 
@@ -76,12 +75,12 @@ Step 50  | Episodes: 4,539  | Reward: 1.00 | Policy Loss: 0.0007  | ε spent: 2.
 Step 100 | Episodes: 9,188  | Reward: 1.00 | Policy Loss: -0.0003 | ε spent: 5.78  | Gossip rounds: 99
 Step 150 | Episodes: 13,608 | Reward: 1.00 | Policy Loss: 0.0003  | ε spent: 6.58  | Gossip rounds: 149
 
-✓ Saved checkpoint: checkpoints/policy_step_50.pt
-✓ Saved checkpoint: checkpoints/policy_step_100.pt
-✓ Saved checkpoint: checkpoints/policy_step_150.pt
+Saved checkpoint: checkpoints/policy_step_50.pt
+Saved checkpoint: checkpoints/policy_step_100.pt
+Saved checkpoint: checkpoints/policy_step_150.pt
 ```
 
-### Training Parameters Used
+### Training Parameters
 
 | Parameter | Value | Description |
 |-----------|-------|-------------|
@@ -96,7 +95,7 @@ Step 150 | Episodes: 13,608 | Reward: 1.00 | Policy Loss: 0.0003  | ε spent: 6.
 
 ---
 
-## ⚙️ Configuration
+## Configuration
 
 Edit `configs/agent.yaml` to customize training:
 
@@ -141,7 +140,7 @@ training:
 
 ---
 
-## 📤 Export Trained Model
+## Export Trained Model
 
 Convert checkpoints for production inference:
 
@@ -157,7 +156,7 @@ python scripts/export_model.py checkpoints/policy_step_150.pt \
 
 ---
 
-## 🎮 Use Cases
+## Use Cases
 
 ### 1. Multi-Robot Coordination
 Train swarm robots without central server communication.
@@ -193,7 +192,7 @@ training:
 
 ---
 
-## 📂 Project Structure
+## Project Structure
 
 ```
 gossip-rl/
@@ -213,7 +212,7 @@ gossip-rl/
 
 ---
 
-## 🔬 Technical Details
+## Technical Details
 
 ### Gossip Protocol
 - **Push-Pull Hybrid**: Agents both push and pull gradients for fast convergence
@@ -231,17 +230,3 @@ gossip-rl/
 | Intra-node latency (shared memory) | < 10μs |
 | Cross-node latency (TCP) | < 100μs |
 | Gradient compression ratio | 10-100x |
-
----
-
-## 📜 License
-
-MIT License - see [LICENSE](LICENSE) for details.
-
----
-
-## 🙏 Acknowledgments
-
-- OpenAI Gymnasium for RL environments
-- PyTorch for neural network framework
-- io_uring for high-performance async I/O (Linux)
