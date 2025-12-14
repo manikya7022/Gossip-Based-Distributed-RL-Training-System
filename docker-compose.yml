@@ -1,0 +1,161 @@
+version: '3.8'
+
+services:
+  # Redpanda - Kafka-compatible streaming platform
+  redpanda:
+    image: docker.redpanda.com/redpandadata/redpanda:v23.3.5
+    container_name: gossip-redpanda
+    command:
+      - redpanda
+      - start
+      - --kafka-addr internal://0.0.0.0:9092,external://0.0.0.0:19092
+      - --advertise-kafka-addr internal://redpanda:9092,external://localhost:19092
+      - --pandaproxy-addr internal://0.0.0.0:8082,external://0.0.0.0:18082
+      - --advertise-pandaproxy-addr internal://redpanda:8082,external://localhost:18082
+      - --schema-registry-addr internal://0.0.0.0:8081,external://0.0.0.0:18081
+      - --rpc-addr redpanda:33145
+      - --advertise-rpc-addr redpanda:33145
+      - --smp 1
+      - --memory 1G
+      - --mode dev-container
+      - --default-log-level=warn
+    ports:
+      - "18081:18081"
+      - "18082:18082"
+      - "19092:19092"
+    volumes:
+      - redpanda_data:/var/lib/redpanda/data
+    healthcheck:
+      test: [ "CMD", "rpk", "cluster", "health" ]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  # Redpanda Console
+  redpanda-console:
+    image: docker.redpanda.com/redpandadata/console:v2.4.0
+    container_name: gossip-redpanda-console
+    entrypoint: /bin/sh
+    command: -c 'echo "$$CONSOLE_CONFIG_FILE" > /tmp/config.yml; /app/console'
+    environment:
+      CONFIG_FILEPATH: /tmp/config.yml
+      CONSOLE_CONFIG_FILE: |
+        kafka:
+          brokers: ["redpanda:9092"]
+        redpanda:
+          adminApi:
+            enabled: true
+            urls: ["http://redpanda:9644"]
+    ports:
+      - "8080:8080"
+    depends_on:
+      redpanda:
+        condition: service_healthy
+
+  # MongoDB for Sacred experiment tracking
+  mongodb:
+    image: mongo:7.0
+    container_name: gossip-mongodb
+    ports:
+      - "27017:27017"
+    volumes:
+      - mongodb_data:/data/db
+    environment:
+      MONGO_INITDB_DATABASE: sacred
+
+  # Omniboard - Sacred UI
+  omniboard:
+    image: vivekratnavel/omniboard:latest
+    container_name: gossip-omniboard
+    ports:
+      - "9000:9000"
+    environment:
+      MONGO_URI: mongodb://mongodb:27017/sacred
+    depends_on:
+      - mongodb
+
+  # Prometheus for metrics
+  prometheus:
+    image: prom/prometheus:v2.48.0
+    container_name: gossip-prometheus
+    ports:
+      - "9090:9090"
+    volumes:
+      - ./configs/prometheus.yml:/etc/prometheus/prometheus.yml
+      - prometheus_data:/prometheus
+    command:
+      - '--config.file=/etc/prometheus/prometheus.yml'
+      - '--storage.tsdb.path=/prometheus'
+      - '--web.enable-lifecycle'
+
+  # Grafana for visualization
+  grafana:
+    image: grafana/grafana:10.2.2
+    container_name: gossip-grafana
+    ports:
+      - "3000:3000"
+    volumes:
+      - grafana_data:/var/lib/grafana
+      - ./configs/grafana/provisioning:/etc/grafana/provisioning
+    environment:
+      GF_SECURITY_ADMIN_USER: admin
+      GF_SECURITY_ADMIN_PASSWORD: gossip123
+      GF_USERS_ALLOW_SIGN_UP: "false"
+    depends_on:
+      - prometheus
+
+  # Jaeger for distributed tracing
+  jaeger:
+    image: jaegertracing/all-in-one:1.52
+    container_name: gossip-jaeger
+    ports:
+      - "16686:16686" # UI
+      - "6831:6831/udp" # Thrift compact
+      - "14268:14268" # HTTP collector
+      - "4317:4317" # OTLP gRPC
+      - "4318:4318" # OTLP HTTP
+    environment:
+      COLLECTOR_OTLP_ENABLED: "true"
+
+  # Gossip-RL Agent (example - scale with replicas)
+  gossip-agent:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: gossip-agent-1
+    environment:
+      AGENT_ID: agent-1
+      KAFKA_BOOTSTRAP_SERVERS: redpanda:9092
+      PROMETHEUS_PORT: 8000
+      JAEGER_AGENT_HOST: jaeger
+      MONGODB_URI: mongodb://mongodb:27017/sacred
+    ports:
+      - "8000:8000" # Prometheus metrics
+      - "50051:50051" # RPC port
+    volumes:
+      - ./configs:/app/configs:ro
+      - agent_data:/data
+    depends_on:
+      redpanda:
+        condition: service_healthy
+      mongodb:
+        condition: service_started
+      jaeger:
+        condition: service_started
+    deploy:
+      resources:
+        limits:
+          memory: 2G
+          cpus: '2'
+
+volumes:
+  redpanda_data:
+  mongodb_data:
+  prometheus_data:
+  grafana_data:
+  agent_data:
+
+
+networks:
+  default:
+    name: gossip-network

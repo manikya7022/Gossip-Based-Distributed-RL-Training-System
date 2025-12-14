@@ -1,0 +1,72 @@
+[build-system]
+requires = ["poetry-core>=1.0.0", "setuptools>=61.0"]
+build-backend = "poetry.core.masonry.api"
+
+[tool.poetry]
+name = "gossip-rl"
+version = "1.0.0"
+description = "Gossip-Based Distributed RL Training System with Differential Privacy"
+authors = ["Gossip-RL Team"]
+readme = "README.md"
+license = "MIT"
+packages = [{include = "gossip_rl", from = "python"}]
+
+[tool.poetry.dependencies]
+python = "^3.10"
+torch = "^2.1.0"
+numpy = "^1.24.0"
+gymnasium = "^0.29.0"
+pydantic = "^2.5.0"
+pydantic-settings = "^2.1.0"
+flatbuffers = "^23.5.26"
+confluent-kafka = "^2.3.0"  # Redpanda compatible
+prometheus-client = "^0.19.0"
+opentelemetry-api = "^1.21.0"
+opentelemetry-sdk = "^1.21.0"
+opentelemetry-exporter-jaeger = "^1.21.0"
+sacred = "^0.8.4"
+pymongo = "^4.6.0"
+cryptography = "^41.0.0"
+scipy = "^1.11.0"
+networkx = "^3.2.0"
+rich = "^13.7.0"
+click = "^8.1.0"
+uvloop = {version = "^0.19.0", markers = "sys_platform != 'win32'"}
+
+[tool.poetry.group.dev.dependencies]
+pytest = "^7.4.0"
+pytest-asyncio = "^0.21.0"
+pytest-cov = "^4.1.0"
+pytest-timeout = "^2.2.0"
+mypy = "^1.7.0"
+ruff = "^0.1.6"
+black = "^23.11.0"
+pre-commit = "^3.6.0"
+hypothesis = "^6.92.0"
+
+[tool.poetry.scripts]
+gossip-rl = "gossip_rl.cli:main"
+gossip-agent = "gossip_rl.agent:run_agent"
+gossip-benchmark = "gossip_rl.benchmark:run_benchmark"
+
+[tool.ruff]
+line-length = 100
+target-version = "py310"
+select = ["E", "F", "W", "I", "UP", "B", "C4", "SIM"]
+ignore = ["E501"]
+
+[tool.black]
+line-length = 100
+target-version = ["py310"]
+
+[tool.mypy]
+python_version = "3.10"
+warn_return_any = true
+warn_unused_ignores = true
+disallow_untyped_defs = true
+plugins = ["pydantic.mypy"]
+
+[tool.pytest.ini_options]
+asyncio_mode = "auto"
+testpaths = ["tests/python"]
+addopts = "-v --tb=short"

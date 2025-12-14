@@ -1,0 +1,38 @@
+global:
+  scrape_interval: 15s
+  evaluation_interval: 15s
+
+alerting:
+  alertmanagers:
+    - static_configs:
+        - targets: []
+
+rule_files: []
+
+scrape_configs:
+  # Prometheus self-monitoring
+  - job_name: 'prometheus'
+    static_configs:
+      - targets: ['localhost:9090']
+
+  # Gossip-RL Agents
+  - job_name: 'gossip-agents'
+    static_configs:
+      - targets: ['gossip-agent:8000']
+    # For Docker Swarm / Kubernetes, use service discovery instead
+    # dns_sd_configs:
+    #   - names: ['tasks.gossip-agent']
+    #     type: 'A'
+    #     port: 8000
+
+  # Redpanda metrics
+  - job_name: 'redpanda'
+    static_configs:
+      - targets: ['redpanda:9644']
+
+  # Custom metrics labels
+  relabel_configs:
+    - source_labels: [__address__]
+      target_label: instance
+      regex: '([^:]+):\d+'
+      replacement: '${1}'

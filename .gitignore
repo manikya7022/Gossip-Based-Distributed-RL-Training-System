@@ -1,0 +1,49 @@
+# Build directories
+build/
+cpp/build/
+
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.egg-info/
+*.egg
+dist/
+.eggs/
+
+# Virtual environments
+venv/
+.venv/
+env/
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+.DS_Store
+
+# Checkpoints (optional - uncomment to exclude)
+# checkpoints/
+
+# Model exports
+models/
+
+# Logs
+*.log
+logs/
+
+# Compiled libraries
+*.so
+*.dylib
+*.a
+
+# CMake
+CMakeCache.txt
+CMakeFiles/
+cmake_install.cmake
+Makefile
+
+# Dependencies
+_deps/
+.cache/

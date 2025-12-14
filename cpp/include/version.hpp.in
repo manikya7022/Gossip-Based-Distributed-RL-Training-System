@@ -1,0 +1,18 @@
+#pragma once
+
+#define GOSSIP_RL_VERSION_MAJOR @gossip_rl_VERSION_MAJOR@
+#define GOSSIP_RL_VERSION_MINOR @gossip_rl_VERSION_MINOR@
+#define GOSSIP_RL_VERSION_PATCH @gossip_rl_VERSION_PATCH@
+#define GOSSIP_RL_VERSION "@gossip_rl_VERSION@"
+
+namespace gossip_rl {
+
+constexpr int kVersionMajor = GOSSIP_RL_VERSION_MAJOR;
+constexpr int kVersionMinor = GOSSIP_RL_VERSION_MINOR;
+constexpr int kVersionPatch = GOSSIP_RL_VERSION_PATCH;
+
+inline const char* GetVersion() {
+    return GOSSIP_RL_VERSION;
+}
+
+}  // namespace gossip_rl

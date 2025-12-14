@@ -1,0 +1,102 @@
+# Agent Configuration
+agent:
+  id: ${AGENT_ID:agent-1}
+  name: ${AGENT_NAME:GossipAgent}
+  
+# Network Configuration
+network:
+  rpc_port: 50051
+  use_shared_memory: true
+  tcp_nodelay: true
+  buffer_size: 65536
+  max_connections: 100
+  
+# Gossip Protocol
+gossip:
+  interval_ms: 100
+  fanout: 3
+  push_pull: true
+  failure_detection:
+    protocol: swim
+    probe_interval_ms: 500
+    probe_timeout_ms: 200
+    indirect_probes: 3
+
+# Gradient Aggregation
+aggregation:
+  method: secure  # Options: simple, secure, fedavg
+  compression:
+    enabled: true
+    method: topk
+    ratio: 0.01  # Keep top 1% gradients
+  quantization:
+    enabled: true
+    bits: 8
+
+# Differential Privacy
+privacy:
+  enabled: true
+  epsilon: 1.0
+  delta: 1e-5
+  mechanism: gaussian
+  clip_norm: 1.0
+  adaptive_noise: true
+  noise_multiplier: 1.1
+
+# RL Training
+training:
+  algorithm: ppo
+  learning_rate: 3e-4
+  gamma: 0.99
+  gae_lambda: 0.95
+  clip_epsilon: 0.2
+  entropy_coef: 0.01
+  value_coef: 0.5
+  max_grad_norm: 0.5
+  batch_size: 64
+  n_epochs: 10
+  n_steps: 2048
+  
+# Environment
+environment:
+  name: CartPole-v1
+  n_envs: 4
+  normalize_obs: true
+  normalize_reward: true
+
+# Experience Replay (Redpanda)
+replay:
+  enabled: true
+  kafka_bootstrap_servers: ${KAFKA_BOOTSTRAP_SERVERS:localhost:19092}
+  topic: experiences
+  buffer_size: 100000
+  priority: false
+
+# Checkpoint
+checkpoint:
+  enabled: true
+  directory: /data/checkpoints
+  interval_steps: 10000
+  keep_last: 5
+
+# Logging & Monitoring
+logging:
+  level: INFO
+  format: json
+  file: /logs/agent.log
+
+metrics:
+  enabled: true
+  port: ${PROMETHEUS_PORT:8000}
+  
+tracing:
+  enabled: true
+  jaeger_host: ${JAEGER_AGENT_HOST:localhost}
+  jaeger_port: 6831
+  sample_rate: 0.1
+
+# Sacred Experiment Tracking
+sacred:
+  enabled: true
+  mongodb_uri: ${MONGODB_URI:mongodb://localhost:27017/sacred}
+  experiment_name: gossip_rl
